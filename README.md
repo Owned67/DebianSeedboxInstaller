@@ -24,3 +24,10 @@ A partir d'une Debian Wheezy vierge, lancer un terminal (ou se connecter en ssh)
 "wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/DebianSeedboxInstaller.sh -O - | sh"
 
 le script se téléchargera et s'executera automatiquement.
+
+Licence :
+----------------
+
+Le script est diffusé sous la licence DWTFYW (Do What The Fuck You Want).
+
+Merci à Kai.
