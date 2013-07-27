@@ -446,86 +446,86 @@ ServerName http://$IP/
 
 #Redirection http > https
 <VirtualHost $IP:80>
-ServerAdmin admin@kim.sufi
-DocumentRoot /var/www/
-ServerName http://$IP/
-Redirect permanent / https://$IP/
+  ServerAdmin admin@kim.sufi
+  DocumentRoot /var/www/
+  ServerName http://$IP/
+  Redirect permanent / https://$IP/
 </VirtualHost>
 
 #SSL
 <IfModule mod_ssl.c>
 <VirtualHost $IP:443>
 
-ServerAdmin admin@kim.sufi
-DocumentRoot /var/www
-ServerName https://$IP
+  ServerAdmin admin@kim.sufi
+  DocumentRoot /var/www
+  ServerName https://$IP
 
-<Directory />
-Options FollowSymLinks
-AllowOverride None
-</Directory>
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
 
-<Directory /var/www/>
-Options FollowSymLinks ExecCGI
-AllowOverride All
-Order allow,deny
-allow from All
-</Directory>
+  <Directory /var/www/>
+    Options FollowSymLinks ExecCGI
+    AllowOverride All
+    Order allow,deny
+    allow from All
+  </Directory>
 
-ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-<Directory "/usr/lib/cgi-bin">
-AllowOverride None
-Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-Order allow,deny
-Allow from all
-</Directory>
+  ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+  <Directory "/usr/lib/cgi-bin">
+    AllowOverride None
+    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+    Order allow,deny
+    Allow from all
+  </Directory>
 
-ErrorLog ${APACHE_LOG_DIR}/error.log
+  ErrorLog ${APACHE_LOG_DIR}/error.log
 
-# Possible values include: debug, info, notice, warn, error, crit,
-# alert, emerg.
-LogLevel warn
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
 
-CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+  CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
 
-# Enable/Disable SSL for this virtual host.
-SSLEngine on
-SSLCertificateFile /etc/ssl/certs/server.crt
-SSLCertificateKeyFile /etc/ssl/certs/server.key
+  # Enable/Disable SSL for this virtual host.
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/server.crt
+  SSLCertificateKeyFile /etc/ssl/certs/server.key
 
-<FilesMatch ".(cgi|shtml|phtml|php)$">
-SSLOptions +StdEnvVars
-</FilesMatch>
-<Directory /usr/lib/cgi-bin>
-SSLOptions +StdEnvVars
-</Directory>
-BrowserMatch "MSIE [2-6]" 
-nokeepalive ssl-unclean-shutdown 
-downgrade-1.0 force-response-1.0
-# MSIE 7 and newer should be able to use keepalive
-BrowserMatch "MSIE [7-9]" ssl-unclean-shutdown
-<Directory /var/www>
-Options All
-AllowOverride All
-AuthName "Private"
-AuthType Basic
-AuthUserFile /etc/apache2/.htpasswd
-Require user $user
-Order allow,deny
-Allow from All
-</Directory>
-<Directory /var/www/downloads>
-Options All
-AllowOverride All
-AuthName "Private"
-AuthType Basic
-AuthUserFile /etc/apache2/.htpasswd
-Require user $user
-Order allow,deny
-Allow from All
-</Directory>
-</VirtualHost>
-</IfModule>
+  <FilesMatch ".(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+  </FilesMatch>
+  <Directory /usr/lib/cgi-bin>
+    SSLOptions +StdEnvVars
+  </Directory>
+    BrowserMatch "MSIE [2-6]" 
+    nokeepalive ssl-unclean-shutdown 
+    downgrade-1.0 force-response-1.0
+    # MSIE 7 and newer should be able to use keepalive
+    BrowserMatch "MSIE [7-9]" ssl-unclean-shutdown
+  <Directory /var/www>
+    Options All
+    AllowOverride All
+    AuthName "Private"
+    AuthType Basic
+    AuthUserFile /etc/apache2/.htpasswd
+    Require user $user
+    Order allow,deny
+    Allow from All
+  </Directory>
+  <Directory /var/www/downloads>
+    Options All
+    AllowOverride All
+    AuthName "Private"
+    AuthType Basic
+    AuthUserFile /etc/apache2/.htpasswd
+    Require user $user
+    Order allow,deny
+    Allow from All
+  </Directory>
+  </VirtualHost>
+  </IfModule>
 DirectoryIndex index.html index.php /_h5ai/server/php/index.php" > /etc/apache2/conf.d/$user
 
 #Activation des différents modules Apache
