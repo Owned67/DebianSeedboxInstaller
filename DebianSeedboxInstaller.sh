@@ -24,7 +24,6 @@ L'installation prendra environ 20 minutes et se déroulera en plusieurs étapes 
 - Installation de _h5ai
 - Installation de MediaInfo
 - Configuration du SFTP
-- Installation de Oh-My-Zsh
 
 Ce script est fourni tel quel, vous l'utilisez en toute connaissance de cause, à vos risques et périls.
 
@@ -198,9 +197,9 @@ echo "
 
 
 ###########################
-# #
+#                         #
 # Compilation de rTorrent #
-# #
+#                         #
 ###########################
 
 
@@ -256,9 +255,9 @@ echo "
 
 
 #############################
-# #
+#                           #
 # Configuration de rTorrent #
-# #
+#                           #
 #############################
 
 
@@ -350,9 +349,9 @@ echo "
 
 
 ###############################################
-# #
+#                                             #
 # Installation de RuTorrent et de ses plugins #
-# #
+#                                             #
 ###############################################
 
 
@@ -375,9 +374,9 @@ echo "
 
 
 ##########################
-# #
+#                        #
 # Configuration d'Apache #
-# #
+#                        #
 ##########################
 
 
@@ -549,9 +548,9 @@ echo "
 
 
 #########################
-# #
+#                       #
 # Installation de _h5ai #
-# #
+#                       #
 #########################
 
 
@@ -573,9 +572,9 @@ echo "
 
 
 #############################
-# #
+#                           #
 # Installation de Mediainfo #
-# #
+#                           #
 #############################
 
 
@@ -605,11 +604,11 @@ echo "
 
 
 
-##########################
-# #
+#########################
+#                       #
 # Configuration du SFTP #
-# #
-##########################
+#                       #
+#########################
 
 
 "
@@ -641,167 +640,8 @@ ln -s /home/$user/downloads /downloads
 #Puis on redémarre le démon ssh
 service ssh restart
 
-echo "
-
-
-
-
-
-
-
-#############################
-# #
-# Installation de Oh-My-ZSH #
-# #
-#############################
-
-
-"
-
-#Un peu de beauté dans ce monde de brute
-cd /home/$user/
-wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-rm .zshrc
-echo"# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="gnzh"
-
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
-# Comment this out to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment to change how many often would you like to wait before auto-updates occur? (in days)
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-# COMPLETION_WAITING_DOTS="true"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-# Customize to your needs...
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl
-
-
-# modified commands
-alias diff='colordiff'              # requires colordiff package
-alias grep='grep --color=auto'
-alias more='less'
-alias df='df -h'
-alias du='du -c -h'
-alias mkdir='mkdir -p -v'
-alias nano='nano -w'
-alias ..='cd ..'
-
-# new commands
-alias da='date "+%A, %B %d, %Y [%T]"'
-alias du1='du --max-depth=1'
-alias hist='history | grep'      # requires an argument
-alias openports='netstat --all --numeric --programs --inet --inet6'
-alias pg='ps -Af | grep $1'         # requires an argument (note: /usr/bin/pg is installed by the util-linux package; maybe a different alias name should be used)
-
-# privileged access
-if [ $UID -ne 0 ]; then
-    alias sudo='sudo '
-    alias scat='sudo cat'
-    alias svim='sudo vim'
-    alias root='sudo su'
-    alias reboot='sudo reboot'
-    alias halt='sudo halt'
-    alias update='sudo pacman -Su'
-    alias netcfg='sudo netcfg2'
-fi
-
-# ls
-alias ls='ls -hF --color=auto'
-alias lr='ls -R'                    # recursive ls
-alias ll='ls -l'
-alias la='ll -A'
-alias lx='ll -BX'                   # sort by extension
-alias lz='ll -rS'                   # sort by size
-alias lt='ll -rt'                   # sort by date
-alias lm='la | more'
-
-# safety features
-alias cp='cp -i'
-alias mv='mv -i'
-alias ln='ln -i'
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-alias ping-google='ping -c 3 www.google.fr'
-
-function extract()
-{
-     if [ -f $1 ] ; then
-         case $1 in
-            *.tar.bz2)   
-                tar xvjf $1     
-                ;;
-            *.tar.gz)    
-                tar xvzf $1     
-                ;;
-            *.bz2)       
-                bunzip2 $1      
-                ;;
-            *.rar)
-                unrar x $1      
-                ;;
-            *.gz)
-                gunzip $1       
-                ;;
-            *.tar)
-                tar xvf $1      
-                ;;
-            *.tbz2)
-                tar xvjf $1     
-                ;;
-            *.tgz)
-                tar xvzf $1     
-                ;;
-            *.zip)
-                unzip $1        
-                ;;
-            *.Z)
-                uncompress $1   
-                ;;
-            *.7z)
-                7z x $1         
-                ;;
-            *)  
-                echo "'$1' cannot be extracted via extract" 
-                ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
-}" > .zshrc
-cp .zshrc /root/.zshrc
-chsh -s $(which zsh)
-
-
-dialog --title "Debian SeedBox v1.0" --infobox "Pour accéder à votre Seedbox : http://$IP/
+#On finalise
+dialog --title "Debian SeedBox Installer v1.0" --infobox "Pour accéder à votre Seedbox : http://$IP/
 Votre login est : $user
 Votre mot de passe est celui donné en début d'installation, j'espère que vous l'avez noté.
 
@@ -813,10 +653,4 @@ Paramètres FTP :
 -Identifiant : $user
 -Mot de passe : Je vous laisse deviner.
 
-Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su.
-
-######################
-----------------------
-Tout est terminé 
-----------------------
-######################" 0 0
+Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su." 0 0
