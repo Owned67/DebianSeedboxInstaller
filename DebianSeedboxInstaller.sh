@@ -2,7 +2,26 @@
 
 #On commence par vérifier que le script est lancé en tant que root
 if [ `whoami` != "root" ]; then 
-echo "Vous devez avoir les privilèges super-utilisateur pour exécuter ce script."
+echo "
+
+
+
+
+
+**************************************************************************
+Vous devez avoir les privilèges super-utilisateur pour exécuter ce script.
+**************************************************************************
+
+
+
+
+
+
+
+
+
+
+"
 exit 1
 fi 
 
