@@ -280,7 +280,7 @@ make && make install
 
 #On nettoie
 cd
-rm -Rf sources
+#rm -Rf sources
 
 #Y'a parfois une petite erreur avec la librairie 
 ldconfig
