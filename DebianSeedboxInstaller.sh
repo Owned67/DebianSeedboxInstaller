@@ -29,7 +29,27 @@ fi
 
 #On installe dialog pour afficher les messages
 clear
-echo "Patientez un instant SVP."
+echo "
+
+
+
+
+
+
+
+
+Patientez un instant SVP.
+
+
+
+
+
+
+
+
+
+
+"
 apt-get install dialog > /dev/null
 
 dialog --title "Debian SeedBox Installer v1.0" --clear --yesno "Ce script est fait pour être exécuté sur une installation Debian vierge.
@@ -421,7 +441,7 @@ echo "
 
 "
 openssl genrsa -des3 -out ca.key -passout file:.passwd 4096 
-openssl req -passin file:.passwd -new -x509 -days 3650 -key ca.key -out ca.crt 
+openssl req -passin file:.passwd -new -x509 -days 3650 -key ca.key -out ca.crt \
 -subj "/C=FR/ST=IDF/L=PARIS/O=TNT/OU=PRE-PROD/CN=www-pp.tnt.fr"
 
 echo "
@@ -429,14 +449,14 @@ echo "
 
 "
 openssl genrsa -passout file:.passwd -des3 -out server.key 4096
-openssl req -new -key server.key -out server.csr -passin file:.passwd 
+openssl req -new -key server.key -out server.csr -passin file:.passwd \
 -subj "/C=FR/ST=IDF/L=PARIS/O=toto/OU=PRE-PROD/CN=kim.su.fi"
 
 echo "
 #Signature du certificat avec l'autorité créée précédemment.
 
 "
-openssl x509 -passin file:.passwd -req -days 3650 -in server.csr 
+openssl x509 -passin file:.passwd -req -days 3650 -in server.csr \
 -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
 
 echo "
@@ -492,7 +512,7 @@ ServerName http://$IP/
   </Directory>
 
   ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-  <Directory "/usr/lib/cgi-bin">
+  <Directory \"/usr/lib/cgi-bin\">
     AllowOverride None
     Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
     Order allow,deny
@@ -512,21 +532,21 @@ ServerName http://$IP/
   SSLCertificateFile /etc/ssl/certs/server.crt
   SSLCertificateKeyFile /etc/ssl/certs/server.key
 
-  <FilesMatch ".(cgi|shtml|phtml|php)$">
+  <FilesMatch \".(cgi|shtml|phtml|php)$\">
     SSLOptions +StdEnvVars
   </FilesMatch>
   <Directory /usr/lib/cgi-bin>
     SSLOptions +StdEnvVars
   </Directory>
-    BrowserMatch "MSIE [2-6]" 
+    BrowserMatch \"MSIE [2-6]\" 
     nokeepalive ssl-unclean-shutdown 
     downgrade-1.0 force-response-1.0
     # MSIE 7 and newer should be able to use keepalive
-    BrowserMatch "MSIE [7-9]" ssl-unclean-shutdown
+    BrowserMatch \"MSIE [7-9]\" ssl-unclean-shutdown
   <Directory /var/www>
     Options All
     AllowOverride All
-    AuthName "Private"
+    AuthName \"Private\"
     AuthType Basic
     AuthUserFile /etc/apache2/.htpasswd
     Require user $user
@@ -536,7 +556,7 @@ ServerName http://$IP/
   <Directory /var/www/downloads>
     Options All
     AllowOverride All
-    AuthName "Private"
+    AuthName \"Private\"
     AuthType Basic
     AuthUserFile /etc/apache2/.htpasswd
     Require user $user
