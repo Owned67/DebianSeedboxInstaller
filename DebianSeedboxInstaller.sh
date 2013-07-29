@@ -688,9 +688,9 @@ echo "
 
 
 ###############################
-#                                                          #
-# Création du Démon rtorrentd             #
-#                                                          #
+#                             #
+# Création du Démon rtorrentd #
+#                             #
 ###############################
 
 
@@ -845,8 +845,8 @@ case \"\$1\" in
 	esac
 	;;
   *)
-	#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
-	echo \"Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}\" >&2
+	#echo \"Usage: \$SCRIPTNAME {start|stop|restart|reload|force-reload}\" >&2
+	echo \"Usage: \$SCRIPTNAME {start|stop|status|restart|force-reload}\" >&2
 	exit 3
 	;;
 esac
