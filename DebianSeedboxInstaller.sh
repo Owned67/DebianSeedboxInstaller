@@ -63,6 +63,7 @@ L'installation prendra environ 20 minutes et se déroulera en plusieurs étapes 
 - Installation de _h5ai
 - Installation de MediaInfo
 - Configuration du SFTP
+- Configuration du Démon rtorrentd
 
 Ce script est fourni tel quel, vous l'utilisez en toute connaissance de cause, à vos risques et périls.
 
@@ -264,23 +265,23 @@ rm *.tar.gz
 
 #XMLRPC
 cd xmlrpc-c/
-#./configure
-#make && make install
+./configure
+make && make install
 
 #libtorrent
 cd ../libtorrent-0.13.2/
-#./configure
-#make && make install
+./configure
+make && make install
 
 #rtorrent
 cd ../rtorrent-0.9.2/
-#./autogen.sh 
-#./configure --with-xmlrpc-c
-#make && make install
+./autogen.sh 
+./configure --with-xmlrpc-c
+make && make install
 
 #On nettoie
 cd
-#rm -Rf sources
+rm -Rf sources
 
 #Y'a parfois une petite erreur avec la librairie 
 ldconfig
@@ -319,8 +320,7 @@ chmod -R 755 /home/$user/downloads/
 chmod -R 711 /home/$user/.session
 
 #On écrit le fichier de configuration .rtorrent.rc en fonction du paramètre de chiffrement obtenu plus haut.
-if [ $secu -eq 1 ] 
-then 
+
 echo "directory = /home/$user/downloads
 session = /home/$user/.session
 port_range = 6890-6999
@@ -333,48 +333,31 @@ dht = disable
 peer_exchange = no
 scgi_port = 127.0.0.1:5000
 ip = 127.0.0.1
-encryption = allow_incoming,try_outgoing" > /home/$user/.rtorrent.rc
+" > /home/$user/.rtorrent.rc
+
+if [ $secu -eq 1 ] 
+then 
+echo "
+encryption = allow_incoming,try_outgoing" >> /home/$user/.rtorrent.rc
 fi 
 
 if [ $secu -eq 2 ] 
 then 
-echo "directory = /home/$user/downloads
-session = /home/$user/.session
-port_range = 6890-6999
-port_random = yes
-check_hash = no
-use_udp_trackers = yes
-schedule = watch_directory,15,15,load_start=/home/$user/watch/*.torrent
-schedule = untied_directory,5,5,stop_untied= 
-dht = disable
-peer_exchange = no
-scgi_port = 127.0.0.1:5000
-ip = 127.0.0.1
-encryption = allow_incoming,require" > /home/$user/.rtorrent.rc
+echo "
+encryption = allow_incoming,require" >> /home/$user/.rtorrent.rc
 fi 
 
 if [ $secu -eq 3 ] 
 then 
-echo "directory = /home/$user/downloads
-session = /home/$user/.session
-port_range = 6890-6999
-port_random = yes
-check_hash = no
-use_udp_trackers = yes
-schedule = watch_directory,15,15,load_start=/home/$user/watch/*.torrent
-schedule = untied_directory,5,5,stop_untied= 
-dht = disable
-peer_exchange = no
-scgi_port = 127.0.0.1:5000
-ip = 127.0.0.1
-encryption = allow_incoming,require_RC4" > /home/$user/.rtorrent.rc
+echo "
+encryption = allow_incoming,require_RC4" >> /home/$user/.rtorrent.rc
 fi 
 
 
 
 # On lance rTorrent en arrière plan
 killall rtorrent 2> /dev/null
-#su $user -c "screen -fn -dmS rtd nice -19 rtorrent"
+#su  -c "screen -fn -dmS rtd nice -19 rtorrent" $user
 
 
 
@@ -573,11 +556,6 @@ a2enmod ssl
 a2enmod auth_digest
 a2enmod scgi
 
-#Redémarrage d'Apache
-service apache2 start
-
-
-
 echo "
 
 
@@ -676,9 +654,6 @@ AllowTcpForwarding no" >> /etc/ssh/sshd_config
 #possède le dossier parent à la racine virtuelle)
 ln -s /home/$user/downloads /downloads
 
-#Puis on redémarre le démon ssh
-service ssh restart
-
 echo "
 
 
@@ -698,17 +673,19 @@ echo "
 
 wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrentd
 sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrentd
-read A
 
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
-
-read B
-
 service rtorrentd start
 
 
 #On finalise
+#Redémarrage d'Apache
+service apache2 start
+
+#Puis on redémarre le démon ssh
+service ssh restart
+
 dialog --title "Debian SeedBox Installer v1.0" --infobox "Pour accéder à votre Seedbox : http://$IP/
 Votre login est : $user
 Votre mot de passe est celui donné en début d'installation, j'espère que vous l'avez noté.
