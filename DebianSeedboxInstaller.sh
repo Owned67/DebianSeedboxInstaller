@@ -714,10 +714,10 @@ echo "#! /bin/sh
 # Do NOT "set -e"
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
 DESC=\"rTorrent daemon\"
 NAME=rtorrentd
-DAEMON=/usr/bin/rtorrent
+DAEMON=/usr/local/bin/rtorrent
 DAEMON_ARGS=\"\"
 PIDFILE=/var/run/\$NAME.pid
 SCRIPTNAME=/etc/init.d/\$NAME
