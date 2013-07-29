@@ -265,18 +265,18 @@ rm *.tar.gz
 #XMLRPC
 cd xmlrpc-c/
 ./configure
-make && make install
+#make && make install
 
 #libtorrent
 cd ../libtorrent-0.13.2/
 ./configure
-make && make install
+#make && make install
 
 #rtorrent
 cd ../rtorrent-0.9.2/
 ./autogen.sh 
 ./configure --with-xmlrpc-c
-make && make install
+#make && make install
 
 #On nettoie
 cd
