@@ -538,8 +538,8 @@ ServerName http://$IP/
   <Directory /usr/lib/cgi-bin>
     SSLOptions +StdEnvVars
   </Directory>
-    BrowserMatch \"MSIE [2-6]\" 
-    nokeepalive ssl-unclean-shutdown 
+    BrowserMatch \"MSIE [2-6]\" \
+    nokeepalive ssl-unclean-shutdown \
     downgrade-1.0 force-response-1.0
     # MSIE 7 and newer should be able to use keepalive
     BrowserMatch \"MSIE [7-9]\" ssl-unclean-shutdown
