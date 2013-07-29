@@ -697,7 +697,7 @@ echo "
 "
 
 wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrentd
-sed "'s/XXXUSERXXX/'$user'/'" /etc/init.d/rtorrentd
+sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrentd
 read A
 
 chmod +x /etc/init.d/rtorrentd
