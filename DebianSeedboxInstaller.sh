@@ -264,18 +264,18 @@ rm *.tar.gz
 
 #XMLRPC
 cd xmlrpc-c/
-./configure
+#./configure
 #make && make install
 
 #libtorrent
 cd ../libtorrent-0.13.2/
-./configure
+#./configure
 #make && make install
 
 #rtorrent
 cd ../rtorrent-0.9.2/
-./autogen.sh 
-./configure --with-xmlrpc-c
+#./autogen.sh 
+#./configure --with-xmlrpc-c
 #make && make install
 
 #On nettoie
@@ -853,8 +853,12 @@ esac
 
 :" > /etc/init.d/rtorrentd
 
+read A
+
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd default
+
+read B
 
 service rtorrentd start
 
