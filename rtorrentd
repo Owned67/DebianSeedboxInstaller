@@ -54,7 +54,18 @@ do_start()
 	#start-stop-daemon --start --quiet --pidfile $PIDFILE --exec su -c “/usr/bin/screen -fn -dmS rtd nice -19 $NAME” $USER -- \
 	#	$DAEMON_ARGS \
 	#	|| return 2
-	su -c '/usr/bin/screen -fn -dmS rtd nice -19 $NAME' $USER
+	su -c "screen -ls|grep rtorrentd" $USER 2&> /dev/null
+	if [ "$?" == "0" ]
+		then return 1
+	fi
+	su -c '/usr/bin/screen -fn -dmS rtorrentd nice -19 /usr/local/bin/rtorrent' $USER
+	if [ "$?" == "0" ]
+		then return 0
+	fi
+	
+	if [ "$?" != "0" ]
+		then return 2
+	fi
 }
 
 #
