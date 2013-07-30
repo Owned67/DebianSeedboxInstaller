@@ -635,25 +635,8 @@ echo "
 #utilisateur normal et obtenir les privilèges par la suite. (su / sudo)
 sed 's/PermitRootLogin/#PermitRootLogin/' /etc/ssh/sshd_config
 
-#On désactive le Subsystem sftp de base pour passer au Subsystem interne
-sed 's/Subsystem/#Subsystem/' /etc/ssh/sshd_config
-
 echo "
 PermitRootLogin no
-#SFTP
-Subsystem sftp internal-sftp
-
-Match Group $user 
-ChrootDirectory /downloads
-ForceCommand internal-sftp
-X11Forwarding no
-AllowTcpForwarding no" >> /etc/ssh/sshd_config
-
-#On crée un lien symbolique pour pouvoir chrooter l'utilisateur
-#dans le dossier Downloads de rtorrent (pour chrooter il faut que root
-#possède le dossier parent à la racine virtuelle)
-ln -s /home/$user/downloads /downloads
-
 echo "
 
 
