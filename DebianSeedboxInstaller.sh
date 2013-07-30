@@ -425,7 +425,7 @@ echo "
 "
 openssl genrsa -des3 -out ca.key -passout file:.passwd 4096 
 openssl req -passin file:.passwd -new -x509 -days 3650 -key ca.key -out ca.crt \
--subj "/C=FR/ST=IDF/L=PARIS/O=TNT/OU=PRE-PROD/CN=www-pp.tnt.fr"
+-subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=PROD/CN=kim.su.fi"
 
 echo "
 #Génération d'une clé serveur et demande de signature.
@@ -433,7 +433,7 @@ echo "
 "
 openssl genrsa -passout file:.passwd -des3 -out server.key 4096
 openssl req -new -key server.key -out server.csr -passin file:.passwd \
--subj "/C=FR/ST=IDF/L=PARIS/O=toto/OU=PRE-PROD/CN=kim.su.fi"
+-subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=PROD/CN=kim.su.fi"
 
 echo "
 #Signature du certificat avec l'autorité créée précédemment.
