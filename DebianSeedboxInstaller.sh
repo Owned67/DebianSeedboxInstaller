@@ -253,12 +253,11 @@ mkdir sources
 cd sources
 
 #On récupère tout
-svn co https://xmlrpc-c.svn.sourceforge.net/svnroot/xmlrpc-c/advanced/ xmlrpc-c
+svn co https://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c
 wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
 wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
 
 #On extrait !
-tar xvzf libtorrent-0.13.2.tar.gz rtorrent-0.9.2.tar.gz
 tar xvzf libtorrent-0.13.2.tar.gz
 tar xvzf rtorrent-0.9.2.tar.gz
 rm *.tar.gz
