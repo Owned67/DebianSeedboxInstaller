@@ -21,7 +21,7 @@ Installation :
 
 A partir d'une Debian Wheezy vierge, lancer un terminal (ou se connecter en ssh), devenir root et lancer cette commande :
 
-"wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/DebianSeedboxInstaller.sh -O - | sh"
+"wget --no-check-certificate https://raw.github.com/synoga/DebianSeedboxInstaller/master/DebianSeedboxInstaller.sh -O - | sh"
 
 le script se téléchargera et s'executera automatiquement.
 
