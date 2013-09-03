@@ -8,13 +8,20 @@ Vous devez avoir les privilèges super-utilisateur (root) pour exécuter ce scri
 exit 1
 fi 
 
+#On configure les locales
+rm -f /etc/locale.gen
+echo "fr_FR.UTF-8 UTF-8
+fr_FR.UTF-8@euro UTF-8
+en_US.UTF-8 UTF-8" > /etc/locale.gen
+locale-gen
+
 #On demande un login et un pass pour la SeedBox
 user=$1
 htpassword=$2
 domain=$3
 
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
-apt-get update -y && apt-get upgrade -y && apt-get install -y apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1  ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-idn php-pear php5-imagick php5-imap php5-json php5-mcrypt php5-memcache php5-mhash php5-ming php5-mysql php5-ps php5spell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-kernel-headers diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion "libsigc++" imagemagick zsh git openssl unrar-free"
+apt-get update -y && apt-get upgrade -y && apt-get install -y apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1  ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-idn php-pear php5-imagick php5-imap php5-json php5-mcrypt php5-memcache php5-mhash php5-ming php5-mysql php5-ps php5spell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-kernel-headers diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++ imagemagick zsh git openssl unrar-free
 
 #Installation de rTorrent
 echo "###########################
