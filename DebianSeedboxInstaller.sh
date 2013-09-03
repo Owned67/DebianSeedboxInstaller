@@ -634,8 +634,7 @@ echo "
 #utilisateur normal et obtenir les privilèges par la suite. (su / sudo)
 sed 's/PermitRootLogin/#PermitRootLogin/' /etc/ssh/sshd_config
 
-echo "
-PermitRootLogin no
+echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 echo "
 
 
@@ -659,6 +658,30 @@ sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrentd
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
 service rtorrentd start
+
+
+echo "
+
+
+
+
+
+
+
+###############################
+#                             #
+#    Configuration du zsh     #
+#                             #
+###############################
+
+
+"
+wget http://formation-debian.via.ecp.fr/fichiers-config/zshrc
+wget http://formation-debian.via.ecp.fr/fichiers-config/zshenv
+wget http://formation-debian.via.ecp.fr/fichiers-config/zlogin
+wget http://formation-debian.via.ecp.fr/fichiers-config/zlogout
+wget http://formation-debian.via.ecp.fr/fichiers-config/dir_colors
+mv zshrc zshenv zlogin zlogout dir_colors /etc/zsh
 
 
 #On finalise
