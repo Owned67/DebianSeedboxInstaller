@@ -20,6 +20,10 @@ user=$1
 htpassword=$2
 domain=$3
 
+user=synoga
+htpassword=azerty
+domain=chenoute.info
+
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
 apt-get update -y && apt-get upgrade -y
 apt-get install -y locale
