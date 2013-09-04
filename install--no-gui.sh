@@ -381,7 +381,7 @@ echo "#########################
 
 #On empêche la connexion root, il faudra se connecter avec un
 #utilisateur normal et obtenir les privilèges par la suite. (su / sudo)
-sed 's/PermitRootLogin/#PermitRootLogin/' /etc/ssh/sshd_config > ssh.config
+sed "s/PermitRootLogin/#PermitRootLogin/" /etc/ssh/sshd_config > ssh.config
 rm /etc/ssh/sshd_config
 mv ssh.config /etc/ssh/sshd_config
 
@@ -394,7 +394,7 @@ echo "###############################
 ###############################"
 
 wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrent
-sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrent > /etc/init.d/rtorrentd
+sed "s/XXXUSERXXX/$user/" /etc/init.d/rtorrent > /etc/init.d/rtorrentd
 
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
@@ -414,7 +414,7 @@ mv zshrc zshenv zlogin zlogout dir_colors /etc/zsh
 
 echo "#################################
 #                               #
-#    Installation de Owncloud    #
+#   Installation de Owncloud    #
 #                               #
 #################################"
 apt-get install -y apache2 
@@ -436,6 +436,11 @@ apt-get install -y php5-recode
 
 
 
+echo "#################################
+#                               #
+#    Installation de calibre    #
+#                               #
+#################################"
 echo "################################
 #                              #
 #    Démarrage des services    #
@@ -464,3 +469,4 @@ Paramètres FTP :
 -Mot de passe : Je vous laisse deviner.
 
 Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su."
+echo "Terminé"
