@@ -242,7 +242,7 @@ chmod 400 .passwd
 # Écriture de la configuration Apache
 IP=`ifconfig eth0 | grep "inet ad" | cut -f2 -d: | awk '{print $1}'`
 
-echo "#Configuration du module SCGI pour la synchro rTorrent/Rutorrent
+echo '#Configuration du module SCGI pour la synchro rTorrent/Rutorrent
 SCGIMount /RPC2 127.0.0.1:5000
 ServerName http://$IP/
 
@@ -328,7 +328,7 @@ ServerName http://$IP/
   </Directory>
   </VirtualHost>
   </IfModule>
-DirectoryIndex index.html index.php /_h5ai/server/php/index.php" > /etc/apache2/conf.d/$user
+DirectoryIndex index.html index.php /_h5ai/server/php/index.php' > /etc/apache2/conf.d/$user
 
 #Activation des différents modules Apache
 a2enmod rewrite
@@ -379,7 +379,9 @@ echo "#########################
 
 #On empêche la connexion root, il faudra se connecter avec un
 #utilisateur normal et obtenir les privilèges par la suite. (su / sudo)
-sed 's/PermitRootLogin/#PermitRootLogin/' /etc/ssh/sshd_config
+sed 's/PermitRootLogin/#PermitRootLogin/' /etc/ssh/sshd_config > ssh.config
+rm /etc/ssh/sshd_config
+mv ssh.config /etc/ssh/sshd_config
 
 echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 echo "###############################
@@ -388,8 +390,8 @@ echo "###############################
 #                             #
 ###############################"
 
-wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrentd
-sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrentd
+wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrent
+sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrent > /etc/init.d/rtorrentd
 
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
