@@ -39,6 +39,8 @@ apt-get install -y php5-common
 apt-get install -y php5-curl 
 apt-get install -y php5-dev 
 apt-get install -y php5-gd 
+apt-get install -y php5-xml-parser 
+apt-get install -y php5-intl
 apt-get install -y php5-idn 
 apt-get install -y php-pear 
 apt-get install -y php5-imagick 
@@ -87,8 +89,9 @@ apt-get install -y unrar-free
 apt-get install -y mp3info 
 apt-get install -y libcurl3-dev 
 apt-get install -y mysql-server
+apt-get install -y smbclient  
 
-#Installation de rTorrent
+
 echo "###########################
 #                         #
 # Compilation de rTorrent #
@@ -307,14 +310,17 @@ ServerName http://$IP/
   <FilesMatch \".(cgi|shtml|phtml|php)$\">
     SSLOptions +StdEnvVars
   </FilesMatch>
+  
   <Directory /usr/lib/cgi-bin>
     SSLOptions +StdEnvVars
   </Directory>
+  
     BrowserMatch \"MSIE [2-6]\" \
     nokeepalive ssl-unclean-shutdown \
     downgrade-1.0 force-response-1.0
     # MSIE 7 and newer should be able to use keepalive
     BrowserMatch \"MSIE [7-9]\" ssl-unclean-shutdown
+    
   <Directory /var/www>
     Options All
     AllowOverride All
@@ -325,6 +331,7 @@ ServerName http://$IP/
     Order allow,deny
     Allow from All
   </Directory>
+  
   <Directory /var/www/downloads>
     Options All
     AllowOverride All
@@ -335,12 +342,14 @@ ServerName http://$IP/
     Order allow,deny
     Allow from All
   </Directory>
+  
   </VirtualHost>
   </IfModule>
 DirectoryIndex index.html index.php /_h5ai/server/php/index.php' > /etc/apache2/conf.d/$user
 
 #Activation des différents modules Apache
 a2enmod rewrite
+a2enmod headers
 a2enmod ssl
 a2enmod auth_digest
 a2enmod scgi
@@ -433,7 +442,9 @@ wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2
 wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2.md5
 md5sum -c --status owncloud-5.0.10.tar.bz2.md5 < owncloud-5.0.10.tar.bz2
 if [ $? = 0 ]
-    then instruction(s)
+    then tar -xjf owncloud-5.0.10.tar.bz2
+    cp -r owncloud /var/www
+    chown -R www-data:www-data /var/www/
 else echo "Téléchargement de Owncloud corrompu, annulation de l'installation" && exit 1
 fi
 
@@ -444,6 +455,10 @@ echo "#################################
 #    Installation de calibre    #
 #                               #
 #################################"
+
+python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main(install_dir='/opt')"
+
+
 echo "################################
 #                              #
 #    Démarrage des services    #
@@ -460,7 +475,8 @@ service apache2 start
 #Puis on redémarre le démon ssh
 service ssh restart
 
-echo "Pour accéder à votre Seedbox : http://$IP/
+clear
+echo "Pour accéder à votre serveur : http://$IP/
 Votre login est : $user
 Votre mot de passe est celui donné en début d'installation, j'espère que vous l'avez noté.
 
