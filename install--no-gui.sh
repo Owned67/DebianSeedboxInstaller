@@ -26,70 +26,7 @@ domain=chenoute.info
 
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
 apt-get update -y && apt-get upgrade -y
-apt-get install -y locales
-apt-get install -y apache2 
-apt-get install -y apache2-doc 
-apt-get install -y apache2-mpm-prefork 
-apt-get install -y apache2-utils 
-apt-get install -y libexpat1 
-apt-get install -y ssl-cert 
-apt-get install -y libapache2-mod-php5 
-apt-get install -y php5 
-apt-get install -y php5-common 
-apt-get install -y php5-curl 
-apt-get install -y php5-dev 
-apt-get install -y php5-gd 
-apt-get install -y php5-xml-parser 
-apt-get install -y php5-intl
-apt-get install -y php5-idn 
-apt-get install -y php-pear 
-apt-get install -y php5-imagick 
-apt-get install -y php5-imap 
-apt-get install -y php5-json 
-apt-get install -y php5-mcrypt 
-apt-get install -y php5-memcache 
-apt-get install -y php5-mhash 
-apt-get install -y php5-ming 
-apt-get install -y php5-mysql 
-apt-get install -y php5-ps 
-apt-get install -y php5spell 
-apt-get install -y php5-recode 
-apt-get install -y php5-snmp 
-apt-get install -y php5-sqlite 
-apt-get install -y php5-tidy 
-apt-get install -y php5-xmlrpc 
-apt-get install -y php5-xsl 
-apt-get install -y libapache2-mod-scgi 
-apt-get install -y build-essential 
-apt-get install -y make 
-apt-get install -y gcc 
-apt-get install -y autoconf 
-apt-get install -y curl 
-apt-get install -y libcurl3 
-apt-get install -y libcurl4-openssl-dev 
-apt-get install -y zip 
-apt-get install -y unzip 
-apt-get install -y libc6-dev 
-apt-get install -y linux-kernel-headers 
-apt-get install -y diffutils 
-apt-get install -y wget 
-apt-get install -y bzip2 
-apt-get install -y screen 
-apt-get install -y ffmpeg 
-apt-get install -y libcppunit-dev 
-apt-get install -y libncurses5-dev 
-apt-get install -y libncursesw5-dev 
-apt-get install -y subversion 
-apt-get install -y libsigc++ 
-apt-get install -y imagemagick 
-apt-get install -y zsh 
-apt-get install -y git 
-apt-get install -y openssl 
-apt-get install -y unrar-free
-apt-get install -y mp3info 
-apt-get install -y libcurl3-dev 
-apt-get install -y mysql-server
-apt-get install -y smbclient
+apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-1.2-5 libsigc++-1.9-0 libsigc++-2.0-0c2a libsigc++-1.1-dev libsigc++-2.0-0 libsigc++0c2 libsigc++-2.0-dev libsigc++0 libsigc++0c102 libsigc++5 libsigc++-2.0-doc libsigc++-1.2-dev libsigc++-1.2-5c102 libsigc++-1.9-dev libsigc++-2.0-0c2 imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient
 apt-get autoremove -y
 
 
