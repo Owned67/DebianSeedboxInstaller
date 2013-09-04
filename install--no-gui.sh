@@ -26,7 +26,7 @@ domain=chenoute.info
 
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
 apt-get update -y && apt-get upgrade -y
-apt-get install -y locale
+apt-get install -y locales
 apt-get install -y apache2 
 apt-get install -y apache2-doc 
 apt-get install -y apache2-mpm-prefork 
