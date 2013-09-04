@@ -89,7 +89,8 @@ apt-get install -y unrar-free
 apt-get install -y mp3info 
 apt-get install -y libcurl3-dev 
 apt-get install -y mysql-server
-apt-get install -y smbclient  
+apt-get install -y smbclient
+apt-get autoremove -y
 
 
 echo "###########################
