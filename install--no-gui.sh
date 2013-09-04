@@ -84,6 +84,9 @@ apt-get install -y zsh
 apt-get install -y git 
 apt-get install -y openssl 
 apt-get install -y unrar-free
+apt-get install -y mp3info 
+apt-get install -y libcurl3-dev 
+apt-get install -y mysql-server
 
 #Installation de rTorrent
 echo "###########################
@@ -421,22 +424,18 @@ echo "#################################
 #   Installation de Owncloud    #
 #                               #
 #################################"
-apt-get install -y apache2 
-apt-get install -y php5 
-apt-get install -y php5-gd 
-apt-get install -y php5-mysql 
-apt-get install -y php5-json 
-apt-get install -y mp3info 
-apt-get install -y curl 
-apt-get install -y libcurl3 
-apt-get install -y libcurl3-dev 
-apt-get install -y php5-curl 
-apt-get install -y zip 
-apt-get install -y git 
-apt-get install -y mysql-server 
-apt-get install -y php5-mcrypt 
-apt-get install -y php5-imap 
-apt-get install -y php5-recode
+ 
+#On retourne à la maison
+cd
+mkdir owncloud
+cd owncloud
+wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2
+wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2.md5
+md5sum -c --status owncloud-5.0.10.tar.bz2.md5 < owncloud-5.0.10.tar.bz2
+if [ $? = 0 ]
+    then instruction(s)
+else echo "Téléchargement de Owncloud corrompu, annulation de l'installation" && exit 1
+fi
 
 
 
