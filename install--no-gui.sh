@@ -22,6 +22,7 @@ domain=$3
 
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
 apt-get update -y && apt-get upgrade -y
+apt-get install -y locale
 apt-get install -y apache2 
 apt-get install -y apache2-doc 
 apt-get install -y apache2-mpm-prefork 
@@ -384,7 +385,8 @@ sed 's/PermitRootLogin/#PermitRootLogin/' /etc/ssh/sshd_config > ssh.config
 rm /etc/ssh/sshd_config
 mv ssh.config /etc/ssh/sshd_config
 
-echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+echo "
+PermitRootLogin no" >> /etc/ssh/sshd_config
 echo "###############################
 #                             #
 # Création du Démon rtorrentd #
@@ -396,7 +398,6 @@ sed 's/XXXUSERXXX/$user/' /etc/init.d/rtorrent > /etc/init.d/rtorrentd
 
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
-service rtorrentd start
 
 echo "###############################
 #                             #
@@ -411,7 +412,40 @@ wget http://formation-debian.via.ecp.fr/fichiers-config/dir_colors
 mv zshrc zshenv zlogin zlogout dir_colors /etc/zsh
 
 
+echo "#################################
+#                               #
+#    Installation de Owncloud    #
+#                               #
+#################################"
+apt-get install -y apache2 
+apt-get install -y php5 
+apt-get install -y php5-gd 
+apt-get install -y php5-mysql 
+apt-get install -y php5-json 
+apt-get install -y mp3info 
+apt-get install -y curl 
+apt-get install -y libcurl3 
+apt-get install -y libcurl3-dev 
+apt-get install -y php5-curl 
+apt-get install -y zip 
+apt-get install -y git 
+apt-get install -y mysql-server 
+apt-get install -y php5-mcrypt 
+apt-get install -y php5-imap 
+apt-get install -y php5-recode
+
+
+
+echo "################################
+#                              #
+#    Démarrage des services    #
+#                              #
+################################"
 #On finalise
+
+#Démarrage du démon rtorrent
+service rtorrentd start
+
 #Redémarrage d'Apache
 service apache2 start
 
@@ -426,7 +460,6 @@ Paramètres FTP :
 -Hôte : $IP
 -Port : 22
 -Protocole : SFTP (SSH File Transfert Protocol)
--Type d'authentification : Normale
 -Identifiant : $user
 -Mot de passe : Je vous laisse deviner.
 
