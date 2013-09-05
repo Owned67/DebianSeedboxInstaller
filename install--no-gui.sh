@@ -20,10 +20,6 @@ user=$1
 htpassword=$2
 domain=$3
 
-user=synoga
-htpassword=azerty
-domain=chenoute.info
-
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
 apt-get update -y && apt-get upgrade -y
 apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-1.2-5 libsigc++-1.9-0 libsigc++-2.0-0c2a libsigc++-1.1-dev libsigc++-2.0-0 libsigc++0c2 libsigc++-2.0-dev libsigc++0 libsigc++0c102 libsigc++5 libsigc++-2.0-doc libsigc++-1.2-dev libsigc++-1.2-5c102 libsigc++-1.9-dev libsigc++-2.0-0c2 imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient
@@ -90,7 +86,7 @@ echo "$user:$htpassword:4242:4242:$user,,,:/home/$user:/bin/bash" | newusers
 mkdir /home/$user/downloads
 mkdir /home/$user/watch
 mkdir /home/$user/.session
-ln -s /home/$user/downloads /var/www/downloads
+ln -s /home/$user/downloads/ /var/www/downloads
 chown www-data:www-data /var/www/downloads
 chown -R $user:$user /home/$user
 
@@ -349,6 +345,7 @@ echo "###############################
 
 wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrent
 sed "s/XXXUSERXXX/$user/" /etc/init.d/rtorrent > /etc/init.d/rtorrentd
+rm -f /etc/init.d/rtorrent
 
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
@@ -425,5 +422,7 @@ Paramètres FTP :
 -Identifiant : $user
 -Mot de passe : Je vous laisse deviner.
 
-Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su."
-echo "Terminé"
+Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su.
+"
+echo "Terminé."
+reboot
