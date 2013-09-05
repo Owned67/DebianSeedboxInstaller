@@ -376,8 +376,8 @@ cd owncloud
 wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2
 wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2.md5
 md5sum -c --status owncloud-5.0.10.tar.bz2.md5 < owncloud-5.0.10.tar.bz2
-if [ $? = 0 ]
-    then tar -xjf owncloud-5.0.10.tar.bz2
+if [ $? = 0 ]; then
+    tar -xjf owncloud-5.0.10.tar.bz2
     cp -r owncloud /var/www
     chown -R www-data:www-data /var/www/
 else echo "Téléchargement de Owncloud corrompu, annulation de l'installation" && exit 1
