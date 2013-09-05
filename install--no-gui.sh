@@ -30,7 +30,7 @@ apt-get update -y && apt-get upgrade -y
 if [ $? != 0 ]; then
 exit 3
 fi
-apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-2.0-0c2a libsigc++-2.0-dev libsigc++-2.0-doc libsigc++-1.2-dev imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient
+apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-2.0-0c2a libsigc++-2.0-dev libsigc++-2.0-doc libsigc++-1.2-dev imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient libzen0 libmediainfo0 mediainfo 
 if [ $? != 0 ]; then
 exit 4
 fi
@@ -395,38 +395,6 @@ fi
 unzip h5ai-0.22.1.zip
 rm h5ai-0.22.1.zip 
 rm index.html 
-
-echo "#############################
-#                           #
-# Installation de Mediainfo #
-#                           #
-#############################"
-
-cd
-mkdir mediainfo
-cd mediainfo
-
-# On récupère !
-wget http://mediaarea.net/download/binary/libzen0/0.4.28/libzen0_0.4.28-1_amd64.Debian_6.0.deb
-if [ $? != 0 ]; then
-exit 33
-fi
-wget http://mediaarea.net/download/binary/libmediainfo0/0.7.61/libmediainfo0_0.7.61-1_amd64.Debian_6.0.deb
-if [ $? != 0 ]; then
-exit 34
-fi
-wget http://mediaarea.net/download/binary/mediainfo/0.7.61/mediainfo_0.7.61-1_amd64.Debian_6.0.deb
-if [ $? != 0 ]; then
-exit 35
-fi
-# On installe !
-dpkg -i *.deb
-if [ $? != 0 ]; then
-exit 36
-fi
-# On clean !
-cd && rm -Rf mediainfo
-
 
 echo "#########################
 #                       #
