@@ -8,6 +8,14 @@ Vous devez avoir les privilèges super-utilisateur (root) pour exécuter ce scri
 exit 1
 fi 
 
+#On demande les infos nécessaires
+echo "Entrez un login"
+read user
+echo "Entrez un mot de passe"
+read htpassword
+echo "entrez un nom de domain"
+read domain
+
 #On configure les locales
 rm -f /etc/locale.gen
 echo "fr_FR.UTF-8 UTF-8
@@ -16,24 +24,21 @@ en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
 
 if [ $? != 0 ]; then
+echo "Problème de locales"
 exit 2
 fi
-
-
-#On demande un login et un pass pour la SeedBox
-user=$1
-htpassword=$2
-domain=$3
 
 #On peut donc mettre à jour le système et installer les paquets nécessaires.
 apt-get update -y && apt-get upgrade -y
 if [ $? != 0 ]; then
+echo "Problème de mise à jour"
 exit 3
 fi
 
 DEBIAN_FRONTEND='noninteractive' command apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-2.0-0c2a libsigc++-2.0-dev libsigc++-2.0-doc libsigc++-1.2-dev imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient libzen0 libmediainfo0 mediainfo glibc-2.13-1 xdg-utils python2.7 phpmyadmin apg
 
 if [ $? != 0 ]; then
+echo "Problème d'installation de paquets"
 exit 4
 fi
 
@@ -54,6 +59,7 @@ apt-get build-dep calibre -y
 apt-get autoremove -y
 
 if [ $? != 0 ]; then
+echo "Problème de création de base de données"
 exit 5
 fi
 
@@ -66,6 +72,7 @@ echo "#############################
 # Création du groupe et de l'utilisateur qui executera rtorrent
 echo "$user:$htpassword:4242:4242:$user,,,:/home/$user:/bin/bash" | newusers
 if [ $? != 0 ]; then
+echo "Problème de création d'utilisateur"
 exit 16
 fi
 
@@ -99,6 +106,7 @@ ip = 127.0.0.1
 encryption = allow_incoming,require_RC4
 " > /home/$user/.rtorrent.rc
 if [ $? != 0 ]; then
+echo "Problème de configuration de rTorrent"
 exit 17
 fi
 
@@ -114,12 +122,14 @@ echo "###############################################
 cd /var/www
 svn checkout http://rutorrent.googlecode.com/svn/trunk/rutorrent/
 if [ $? != 0 ]; then
+echo "Problème de download de rutorrent"
 exit 18
 fi
 cd rutorrent
 rm -R plugins
 svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins/
 if [ $? != 0 ]; then
+echo "Problème de download des plugins rutorrent"
 exit 19
 fi
 chown -R www-data:www-data /var/www
@@ -135,6 +145,7 @@ service apache2 stop
 #Génération du .htpasswd que nous placons dans le dossier etc/apache2, à l'abri.
 htpasswd -mbc /etc/apache2/.htpasswd $user $htpassword
 if [ $? != 0 ]; then
+echo "Problème de création de fichier .htpasswd"
 exit 20
 fi
 #Génération des clés de chiffrement
@@ -152,11 +163,13 @@ echo "
 "
 openssl genrsa -des3 -out ca.key -passout file:.passwd 4096 
 if [ $? != 0 ]; then
+echo "Problème de d'autorité de certification"
 exit 21
 fi
 openssl req -passin file:.passwd -new -x509 -days 3650 -key ca.key -out ca.crt \
 -subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=PROD/CN=$domain"
 if [ $? != 0 ]; then
+echo "Problème de configuration d'autorité de certification"
 exit 22
 fi
 
@@ -166,11 +179,13 @@ echo "
 "
 openssl genrsa -passout file:.passwd -des3 -out server.key 4096
 if [ $? != 0 ]; then
+echo "Problème de création de clé serveur"
 exit 23
 fi
 openssl req -new -key server.key -out server.csr -passin file:.passwd \
 -subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=PROD/CN=$domain"
 if [ $? != 0 ]; then
+echo "Problème de création de certificat serveur"
 exit 24
 fi
 
@@ -181,14 +196,17 @@ echo "
 openssl x509 -passin file:.passwd -req -days 3650 -in server.csr \
 -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
 if [ $? != 0 ]; then
+echo "Problème de signature du certificat avec l'autorité"
 exit 25
 fi
+
 echo "
 #Faire un fichier server.key qui n'implique pas une demande de mot de passe d'Apache.
 
 "
 openssl rsa -passin file:.passwd -in server.key -out server.key.insecure
 if [ $? != 0 ]; then
+echo "Problème de configuration de clé serveur"
 exit 26
 fi
 
@@ -299,28 +317,34 @@ ServerName http://$IP/
   </IfModule>
 DirectoryIndex index.html index.php /_h5ai/server/php/index.php" > /etc/apache2/conf.d/$user
 if [ $? != 0 ]; then
+echo "Problème de configuration Apache"
 exit 27
 fi
 
 #Activation des différents modules Apache
 a2enmod rewrite
 if [ $? != 0 ]; then
+echo "Problème d'activation de module apache"
 exit 28
 fi
 a2enmod headers
 if [ $? != 0 ]; then
+echo "Problème d'activation de module apache "
 exit 29
 fi
 a2enmod ssl
 if [ $? != 0 ]; then
+echo "Problème d'activation de module apache "
 exit 30
 fi
 a2enmod auth_digest
 if [ $? != 0 ]; then
+echo "Problème d'activation de module apache "
 exit 31
 fi
 a2enmod scgi
 if [ $? != 0 ]; then
+echo "Problème d'activation de module apache "
 exit 32
 fi
 
@@ -333,6 +357,7 @@ echo "#########################
 cd /var/www/
 wget http://release.larsjung.de/h5ai/h5ai-0.22.1.zip
 if [ $? != 0 ]; then
+echo "Problème de download de _H5AI"
 exit 33
 fi
 unzip h5ai-0.22.1.zip
@@ -350,6 +375,7 @@ echo "#########################
 #utilisateur normal et obtenir les privilèges par la suite. (su / sudo)
 sed "s/PermitRootLogin/#PermitRootLogin/" /etc/ssh/sshd_config > ssh.config
 if [ $? != 0 ]; then
+echo "Problème de configuration du SFTP"
 exit 37
 fi
 rm /etc/ssh/sshd_config
@@ -365,10 +391,12 @@ echo "###############################
 
 wget https://raw.github.com/synoga/DebianSeedboxInstaller/master/rtorrentd -O /etc/init.d/rtorrent
 if [ $? != 0 ]; then
+echo "Problème de download du démon rtorrentd"
 exit 38
 fi
 sed "s/XXXUSERXXX/$user/" /etc/init.d/rtorrent > /etc/init.d/rtorrentd
 if [ $? != 0 ]; then
+echo "Problème de configuration du démon rtorrentd"
 exit 39
 fi
 rm -f /etc/init.d/rtorrent
@@ -376,6 +404,7 @@ rm -f /etc/init.d/rtorrent
 chmod +x /etc/init.d/rtorrentd
 update-rc.d rtorrentd defaults
 if [ $? != 0 ]; then
+echo "Problème d'activation du démon rtorrentd"
 exit 40
 fi
 echo "###############################
@@ -385,18 +414,22 @@ echo "###############################
 ###############################"
 wget http://formation-debian.via.ecp.fr/fichiers-config/zshrc
 if [ $? != 0 ]; then
+echo "Problème de download de la conf zsh"
 exit 41
 fi
 wget http://formation-debian.via.ecp.fr/fichiers-config/zshenv
 if [ $? != 0 ]; then
+echo "Problème de download de la conf zsh"
 exit 42
 fi
 wget http://formation-debian.via.ecp.fr/fichiers-config/zlogin
 if [ $? != 0 ]; then
+echo "Problème de download de la conf zsh"
 exit 43
 fi
 wget http://formation-debian.via.ecp.fr/fichiers-config/zlogout
 if [ $? != 0 ]; then
+echo "Problème de download de la conf zsh"
 exit 44
 fi
 wget http://formation-debian.via.ecp.fr/fichiers-config/dir_colors
@@ -415,10 +448,12 @@ mkdir owncloud
 cd owncloud
 wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2
 if [ $? != 0 ]; then
+echo "Problème de download de owncloud"
 exit 45
 fi
 wget http://download.owncloud.org/community/owncloud-5.0.10.tar.bz2.md5
 if [ $? != 0 ]; then
+echo "Problème de download de la signature MD5 de owncloud"
 exit 46
 fi
 md5sum -c --status owncloud-5.0.10.tar.bz2.md5 < owncloud-5.0.10.tar.bz2
@@ -439,6 +474,7 @@ echo "#################################
 
 python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main(install_dir='/opt')"
 if [ $? != 0 ]; then
+echo "Problème d'installation de calibre"
 exit 47
 fi
 
@@ -458,17 +494,20 @@ cd sources
 
 git clone https://github.com/rakshasa/rtorrent.git
 if [ $? != 0 ]; then
+echo "Problème de download du dépot rtorrent"
 exit 6
 fi
 
 git clone https://github.com/rakshasa/libtorrent.git
 if [ $? != 0 ]; then
+echo "Problème de download du dépot libtorrent"
 exit 6
 fi
 
 #On récupère tout
 svn co https://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c
 if [ $? != 0 ]; then
+echo "Problème de download du dépot xmlrpc-c"
 exit 6
 fi
 
@@ -496,6 +535,7 @@ cd xmlrpc-c/
 ./configure
 make && make install
 if [ $? != 0 ]; then
+echo "Problème de compilation de xmlrpc-c"
 exit 11
 fi
 
@@ -504,6 +544,7 @@ cd ../libtorrent/
 ./configure
 make && make install
 if [ $? != 0 ]; then
+echo "Problème de compilation de libtorrent"
 exit 12
 fi
 
@@ -513,6 +554,7 @@ cd ../rtorrent/
 ./configure --with-xmlrpc-c
 make && make install
 if [ $? != 0 ]; then
+echo "Problème de compilation de rtorrent"
 exit 13
 fi
 
@@ -520,39 +562,39 @@ fi
 cd
 rm -Rf sources
 if [ $? != 0 ]; then
+echo "problème de nettoyage"
 exit 14
 fi
 
 #Y'a parfois une petite erreur avec la librairie 
 ldconfig
 if [ $? != 0 ]; then
+echo "Problème de configuration des bibliothèques"
 exit 15
 fi
 
-
-echo "################################
-#                              #
-#    Démarrage des services    #
-#                              #
-################################"
 #On finalise
 
 clear
-echo "Pour accéder à votre serveur : http://$IP/
-Votre login est : $user
-Votre mot de passe est celui donné en début d'installation, j'espère que vous l'avez noté.
+echo "_H5AI : http://$IP/
+Rutorrent : http://$IP/rutorrent/ (login : $user | password : $htpassword)
+Owncloud : http://$IP/owncloud/ 
+
+Configuration Owncloud :
+Rendez-vous sur http://$IP/owncloud/ et créez votre compte administrateur avec votre login et votre mot de passe puis cliquez sur "Advanced" choisissez une base de données de type MYSQL avec les paramètres suivants : login : owncloud | nom de base : owncloud | mot de passe : $htpassword | hote : localhost
 
 Paramètres FTP :
 -Hôte : $IP
 -Port : 22
 -Protocole : SFTP (SSH File Transfert Protocol)
 -Identifiant : $user
--Mot de passe : Je vous laisse deviner.
+-Mot de passe : $htpassword
 
 Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su.
 "
 echo "Terminé."
 reboot
 if [ $? != 0 ]; then
+echo "problème de redémarrage"
 exit 51
 fi
