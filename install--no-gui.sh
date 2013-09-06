@@ -192,7 +192,7 @@ chmod 400 .passwd
 # Écriture de la configuration Apache
 IP=`ifconfig eth0 | grep "inet ad" | cut -f2 -d: | awk '{print $1}'`
 
-echo '#Configuration du module SCGI pour la synchro rTorrent/Rutorrent
+echo "#Configuration du module SCGI pour la synchro rTorrent/Rutorrent
 SCGIMount /RPC2 127.0.0.1:5000
 ServerName http://$IP/
 
@@ -283,7 +283,7 @@ ServerName http://$IP/
   
   </VirtualHost>
   </IfModule>
-DirectoryIndex index.html index.php /_h5ai/server/php/index.php' > /etc/apache2/conf.d/$user
+DirectoryIndex index.html index.php /_h5ai/server/php/index.php" > /etc/apache2/conf.d/$user
 if [ $? != 0 ]; then
 exit 27
 fi
@@ -442,29 +442,40 @@ cd
 mkdir sources
 cd sources
 
+git clone https://github.com/rakshasa/rtorrent.git
+if [ $? != 0 ]; then
+exit 6
+fi
+
+git clone https://github.com/rakshasa/libtorrent.git
+if [ $? != 0 ]; then
+exit 6
+fi
+
 #On récupère tout
 svn co https://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c
 if [ $? != 0 ]; then
 exit 6
 fi
-wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
-if [ $? != 0 ]; then
-exit 7
-fi
-wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
-if [ $? != 0 ]; then
-exit 8
-fi
-#On extrait !
-tar xvzf libtorrent-0.13.2.tar.gz
-if [ $? != 0 ]; then
-exit 9
-fi
-tar xvzf rtorrent-0.9.2.tar.gz
-if [ $? != 0 ]; then
-exit 10
-fi
-rm *.tar.gz
+
+#wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
+#if [ $? != 0 ]; then
+#exit 7
+#fi
+#wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
+#if [ $? != 0 ]; then
+#exit 8
+#fi
+##On extrait !
+#tar xvzf libtorrent-0.13.2.tar.gz
+#if [ $? != 0 ]; then
+#exit 9
+#fi
+#tar xvzf rtorrent-0.9.2.tar.gz
+#if [ $? != 0 ]; then
+#exit 10
+#fi
+#rm *.tar.gz
 
 #XMLRPC
 cd xmlrpc-c/
@@ -475,7 +486,7 @@ exit 11
 fi
 
 #libtorrent
-cd ../libtorrent-0.13.2/
+cd ../libtorrent/
 ./configure
 make && make install
 if [ $? != 0 ]; then
@@ -483,7 +494,7 @@ exit 12
 fi
 
 #rtorrent
-cd ../rtorrent-0.9.2/
+cd ../rtorrent/
 ./autogen.sh 
 ./configure --with-xmlrpc-c
 make && make install
