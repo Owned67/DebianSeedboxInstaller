@@ -30,88 +30,17 @@ apt-get update -y && apt-get upgrade -y
 if [ $? != 0 ]; then
 exit 3
 fi
-apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-2.0-0c2a libsigc++-2.0-dev libsigc++-2.0-doc libsigc++-1.2-dev imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient libzen0 libmediainfo0 mediainfo
+apt-get install -y locales apache2 apache2-doc apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-mod-php5 php5 php5-common php5-curl php5-dev php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-mysql php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl libapache2-mod-scgi build-essential make gcc autoconf curl libcurl3 libcurl4-openssl-dev zip unzip libc6-dev linux-libc-dev diffutils wget bzip2 screen ffmpeg libcppunit-dev libncurses5-dev libncursesw5-dev subversion libsigc++-1.2-5c2 libsigc++-dev libsigc++-2.0-0c2a libsigc++-2.0-dev libsigc++-2.0-doc libsigc++-1.2-dev imagemagick zsh git openssl unrar-free mp3info libcurl4-openssl-dev mysql-server smbclient libzen0 libmediainfo0 mediainfo glibc-2.13-1 xdg-utils python2.7
+
 if [ $? != 0 ]; then
 exit 4
 fi
+
+apt-get build-dep calibre -y
 apt-get autoremove -y
+
 if [ $? != 0 ]; then
 exit 5
-fi
-
-echo "###########################
-#                         #
-# Compilation de rTorrent #
-#                         #
-###########################"
-
-# Retour à la maison !
-cd
-
-# Soyons propres
-mkdir sources
-cd sources
-
-#On récupère tout
-svn co https://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c
-if [ $? != 0 ]; then
-exit 6
-fi
-wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
-if [ $? != 0 ]; then
-exit 7
-fi
-wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
-if [ $? != 0 ]; then
-exit 8
-fi
-#On extrait !
-tar xvzf libtorrent-0.13.2.tar.gz
-if [ $? != 0 ]; then
-exit 9
-fi
-tar xvzf rtorrent-0.9.2.tar.gz
-if [ $? != 0 ]; then
-exit 10
-fi
-rm *.tar.gz
-
-#XMLRPC
-cd xmlrpc-c/
-./configure
-make && make install
-if [ $? != 0 ]; then
-exit 11
-fi
-
-#libtorrent
-cd ../libtorrent-0.13.2/
-./configure
-make && make install
-if [ $? != 0 ]; then
-exit 12
-fi
-
-#rtorrent
-cd ../rtorrent-0.9.2/
-./autogen.sh 
-./configure --with-xmlrpc-c
-make && make install
-if [ $? != 0 ]; then
-exit 13
-fi
-
-#On nettoie
-cd
-rm -Rf sources
-if [ $? != 0 ]; then
-exit 14
-fi
-
-#Y'a parfois une petite erreur avec la librairie 
-ldconfig
-if [ $? != 0 ]; then
-exit 15
 fi
 
 echo "#############################
@@ -499,30 +428,89 @@ if [ $? != 0 ]; then
 exit 47
 fi
 
+
+echo "###########################
+#                         #
+# Compilation de rTorrent #
+#                         #
+###########################"
+
+# Retour à la maison !
+cd
+
+# Soyons propres
+mkdir sources
+cd sources
+
+#On récupère tout
+svn co https://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c
+if [ $? != 0 ]; then
+exit 6
+fi
+wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
+if [ $? != 0 ]; then
+exit 7
+fi
+wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
+if [ $? != 0 ]; then
+exit 8
+fi
+#On extrait !
+tar xvzf libtorrent-0.13.2.tar.gz
+if [ $? != 0 ]; then
+exit 9
+fi
+tar xvzf rtorrent-0.9.2.tar.gz
+if [ $? != 0 ]; then
+exit 10
+fi
+rm *.tar.gz
+
+#XMLRPC
+cd xmlrpc-c/
+./configure
+make && make install
+if [ $? != 0 ]; then
+exit 11
+fi
+
+#libtorrent
+cd ../libtorrent-0.13.2/
+./configure
+make && make install
+if [ $? != 0 ]; then
+exit 12
+fi
+
+#rtorrent
+cd ../rtorrent-0.9.2/
+./autogen.sh 
+./configure --with-xmlrpc-c
+make && make install
+if [ $? != 0 ]; then
+exit 13
+fi
+
+#On nettoie
+cd
+rm -Rf sources
+if [ $? != 0 ]; then
+exit 14
+fi
+
+#Y'a parfois une petite erreur avec la librairie 
+ldconfig
+if [ $? != 0 ]; then
+exit 15
+fi
+
+
 echo "################################
 #                              #
 #    Démarrage des services    #
 #                              #
 ################################"
 #On finalise
-
-#Démarrage du démon rtorrent
-service rtorrentd start
-if [ $? != 0 ]; then
-exit 48
-fi
-
-#Redémarrage d'Apache
-service apache2 start
-if [ $? != 0 ]; then
-exit 49
-fi
-
-#Puis on redémarre le démon ssh
-service ssh restart
-if [ $? != 0 ]; then
-exit 50
-fi
 
 clear
 echo "Pour accéder à votre serveur : http://$IP/
