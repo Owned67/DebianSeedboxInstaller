@@ -21,11 +21,7 @@ Installation :
 
 A partir d'une Debian Wheezy vierge, lancer un terminal (ou se connecter en ssh), devenir root et lancer cette commande :
 
-"wget --no-check-certificate https://raw.github.com/synoga/DebianSeedboxInstaller/master/install--no-gui.sh
-
-chmod +x install--no-gui.sh
-
-./install--no-gui.sh login pass hostname"
+"wget --no-check-certificate https://raw.github.com/synoga/DebianSeedboxInstaller/master/install--no-gui.sh -O -| sh"
 
 le script se téléchargera et s'executera automatiquement.
 
