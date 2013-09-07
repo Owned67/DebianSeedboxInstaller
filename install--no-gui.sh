@@ -492,17 +492,19 @@ cd
 mkdir sources
 cd sources
 
-git clone https://github.com/rakshasa/rtorrent.git
+wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.3.tar.gz
 if [ $? != 0 ]; then
 echo "Problème de download du dépot rtorrent"
 exit 6
 fi
+tar xzf rtorrent*
 
-git clone https://github.com/rakshasa/libtorrent.git
+wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.3.tar.gz
 if [ $? != 0 ]; then
 echo "Problème de download du dépot libtorrent"
 exit 6
 fi
+tar xzf libtorrent*
 
 #On récupère tout
 svn co https://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c
@@ -511,24 +513,6 @@ echo "Problème de download du dépot xmlrpc-c"
 exit 6
 fi
 
-#wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
-#if [ $? != 0 ]; then
-#exit 7
-#fi
-#wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
-#if [ $? != 0 ]; then
-#exit 8
-#fi
-##On extrait !
-#tar xvzf libtorrent-0.13.2.tar.gz
-#if [ $? != 0 ]; then
-#exit 9
-#fi
-#tar xvzf rtorrent-0.9.2.tar.gz
-#if [ $? != 0 ]; then
-#exit 10
-#fi
-#rm *.tar.gz
 
 #XMLRPC
 cd xmlrpc-c/
@@ -540,8 +524,7 @@ exit 11
 fi
 
 #libtorrent
-cd ../libtorrent/
-./autogen.sh
+cd ../libtorrent*/
 ./configure
 make && make install
 if [ $? != 0 ]; then
@@ -550,8 +533,7 @@ exit 12
 fi
 
 #rtorrent
-cd ../rtorrent/
-./autogen.sh 
+cd ../rtorrent*/
 ./configure --with-xmlrpc-c
 make && make install
 if [ $? != 0 ]; then
