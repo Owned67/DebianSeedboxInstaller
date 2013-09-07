@@ -541,6 +541,7 @@ fi
 
 #libtorrent
 cd ../libtorrent/
+./autogen.sh
 ./configure
 make && make install
 if [ $? != 0 ]; then
