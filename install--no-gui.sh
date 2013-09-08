@@ -18,8 +18,7 @@ read domain
 
 #On configure les locales
 rm -f /etc/locale.gen
-echo "fr_FR.UTF-8 UTF-8
-fr_FR.UTF-8@euro UTF-8
+echo "fr_FR.UTF-8@euro UTF-8
 en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
 
