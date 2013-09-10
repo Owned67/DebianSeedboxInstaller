@@ -154,7 +154,7 @@ echo "
 #Creation d'un fichier mot de passe.
 
 "
-echo 6ec728db6df7 > .passwd
+apg -q -a  0 -n 1 -M NCL > .passwd
 
 echo "
 #Génération de notre propre autorité de certification.
