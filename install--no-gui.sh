@@ -13,8 +13,13 @@ echo "Entrez un login"
 read user
 echo "Entrez un mot de passe"
 read htpassword
-echo "entrez un nom de domain"
+echo "Entrez un nom de domain"
 read domain
+echo "Entrez la vitesse limite de téléchargement (en Ko/s, 0 pour illimité)"
+read downspeed
+echo "Entrez la vitesse limite de téléversement (en Ko/s, 0 pour illimité)"
+read upspeed
+
 
 #On configure les locales
 rm -f /etc/locale.gen
@@ -92,6 +97,8 @@ chmod -R 711 /home/$user/.session
 
 echo "directory = /home/$user/downloads
 session = /home/$user/.session
+download_rate = $downspeed
+upload_rate = $upspeed
 port_range = 6890-6999
 port_random = yes
 check_hash = no
@@ -218,6 +225,8 @@ mv server.key.insecure server.key
 
 chmod 400 server.*
 chmod 400 .passwd
+
+cp ca.crt /home/$user/
 
 
 # Écriture de la configuration Apache
@@ -573,6 +582,7 @@ Paramètres FTP :
 -Mot de passe : $htpassword
 
 Le certificat de chiffrement étant autosigné, certains navigateurs vous offriront probablement des avertissements de sécurité. Ignorez-les après avoir vérifié l'url dans la barre d'adresse. De plus, la connexion ssh pour root est désactivée par sécurité, vous pouvez vous connecter avec votre login et votre mot de passe, puis passer root avec la commande su.
+Sinon, vous pouvez autoriser manuellement votre navigateur à accepter ce certificat, grâce au fichier /home/$user/ca.crt
 "
 echo "Terminé."
 reboot
