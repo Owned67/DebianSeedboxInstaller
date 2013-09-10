@@ -234,14 +234,14 @@ IP=`ifconfig eth0 | grep "inet ad" | cut -f2 -d: | awk '{print $1}'`
 
 echo "#Configuration du module SCGI pour la synchro rTorrent/Rutorrent
 SCGIMount /RPC2 127.0.0.1:5000
-ServerName http://$IP/
+ServerName http://$domain/
 
 #Redirection http > https
 <VirtualHost $IP:80>
   ServerAdmin admin@kim.sufi
   DocumentRoot /var/www/
-  ServerName http://$IP/
-  Redirect permanent / https://$IP/
+  ServerName http://$domain/
+  Redirect permanent / https://$domain/
 </VirtualHost>
 
 #SSL
@@ -250,7 +250,7 @@ ServerName http://$IP/
 
   ServerAdmin admin@kim.sufi
   DocumentRoot /var/www
-  ServerName https://$IP
+  ServerName https://$domain
 
   <Directory />
     Options FollowSymLinks
