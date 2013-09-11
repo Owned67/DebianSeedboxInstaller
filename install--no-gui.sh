@@ -237,7 +237,7 @@ SCGIMount /RPC2 127.0.0.1:5000
 ServerName http://$domain/
 
 #Redirection http > https
-<VirtualHost $IP:80>
+<VirtualHost *:80>
   ServerAdmin admin@kim.sufi
   DocumentRoot /var/www/
   ServerName http://$domain/
@@ -250,7 +250,7 @@ ServerName http://$domain/
 
   ServerAdmin admin@kim.sufi
   DocumentRoot /var/www
-  ServerName https://$domain
+  ServerName https://$domain/
 
   <Directory />
     Options FollowSymLinks
