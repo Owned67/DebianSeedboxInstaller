@@ -226,6 +226,10 @@ mv server.key.insecure server.key
 chmod 400 server.*
 chmod 400 .passwd
 
+openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -out $users.crt -keyout $user.key -subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=PROD/CN=$domain"
+
+chmod 400 $user.*
+cp $user.crt /home/$user/
 cp ca.crt /home/$user/
 
 
