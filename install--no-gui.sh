@@ -19,11 +19,13 @@ echo "Entrez la vitesse limite de téléchargement (en Ko/s, 0 pour illimité)"
 read downspeed
 echo "Entrez la vitesse limite de téléversement (en Ko/s, 0 pour illimité)"
 read upspeed
+echo "Entrez un mot de passe root pour la base de données"
+read bddpassword
 
 
 #On configure les locales
 rm -f /etc/locale.gen
-echo "fr_FR.UTF-8@euro UTF-8
+echo "fr_FR.UTF-8 UTF-8
 en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
 
@@ -47,17 +49,13 @@ exit 4
 fi
 
 MYSQL_PASSWORD="$(command apg -q -a  0 -n 1 -M NCL)"
-command echo "SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('${MYSQL_PASSWORD}')" | command mysql --user=root
-command echo "SET PASSWORD FOR 'root'@'${HOSTNAME}' = PASSWORD('${MYSQL_PASSWORD}')" | command mysql --user=root
-command mysqladmin -u root password "${MYSQL_PASSWORD}"
+command echo "SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('${bddpassword}')" | command mysql --user=root
+command echo "SET PASSWORD FOR 'root'@'${HOSTNAME}' = PASSWORD('${bddpassword}')" | command mysql --user=root
+command mysqladmin -u root password "${bddpassword}"
 
-mysql -u root -p$MYSQL_PASSWORD<<EOSQL
+mysql -u root -p$bddpassword<<EOSQL
 CREATE DATABASE owncloud CHARACTER SET utf8;
-GRANT ALL PRIVILEGES
-ON owncloud.*
-TO 'owncloud'@'localhost'
-IDENTIFIED BY "$htpassword"
-WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON owncloud.* TO 'owncloud'@'localhost' IDENTIFIED BY "$htpassword" WITH GRANT OPTION;
 EOSQL
 apt-get build-dep calibre -y
 apt-get autoremove -y
@@ -92,8 +90,6 @@ chown -R $user:$user /home/$user
 # On limite l'accès aux dossiers rtorrent à l'utilisateur rtorrent seul.
 chmod -R 755 /home/$user/downloads/
 chmod -R 711 /home/$user/.session
-
-#On écrit le fichier de configuration .rtorrent.rc en fonction du paramètre de chiffrement obtenu plus haut.
 
 echo "directory = /home/$user/downloads
 session = /home/$user/.session
@@ -148,7 +144,7 @@ echo "##########################
 
 #Arrêt du serveur Apache
 service apache2 stop
-#Génération du .htpasswd que nous placons dans le dossier etc/apache2, à l'abri.
+#Génération du .htpasswd que nous placons dans le dossier /etc/apache2/, à l'abri.
 htpasswd -mbc /etc/apache2/.htpasswd $user $htpassword
 if [ $? != 0 ]; then
 echo "Problème de création de fichier .htpasswd"
@@ -229,8 +225,8 @@ chmod 400 .passwd
 openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -out $users.crt -keyout $user.key -subj "/C=FR/ST=IDF/L=PARIS/O=42/OU=PROD/CN=$domain"
 
 chmod 400 $user.*
-cp $user.crt /home/$user/
-cp ca.crt /home/$user/
+cp $user.crt /home/$user/downloads
+cp ca.crt /home/$user/downloads
 
 
 # Écriture de la configuration Apache
@@ -336,27 +332,27 @@ fi
 #Activation des différents modules Apache
 a2enmod rewrite
 if [ $? != 0 ]; then
-echo "Problème d'activation de module apache"
+echo "Problème d'activation de module apache rewrite"
 exit 28
 fi
 a2enmod headers
 if [ $? != 0 ]; then
-echo "Problème d'activation de module apache "
+echo "Problème d'activation de module apache headers"
 exit 29
 fi
 a2enmod ssl
 if [ $? != 0 ]; then
-echo "Problème d'activation de module apache "
+echo "Problème d'activation de module apache ssl"
 exit 30
 fi
 a2enmod auth_digest
 if [ $? != 0 ]; then
-echo "Problème d'activation de module apache "
+echo "Problème d'activation de module apache auth_digest"
 exit 31
 fi
 a2enmod scgi
 if [ $? != 0 ]; then
-echo "Problème d'activation de module apache "
+echo "Problème d'activation de module apache scgi"
 exit 32
 fi
 
@@ -504,6 +500,7 @@ cd
 mkdir sources
 cd sources
 
+#wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.3.tar.gz
 wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.3.tar.gz
 if [ $? != 0 ]; then
 echo "Problème de download du dépot rtorrent"
@@ -511,6 +508,7 @@ exit 6
 fi
 tar xzf rtorrent*
 
+#wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.3.tar.gz
 wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.3.tar.gz
 if [ $? != 0 ]; then
 echo "Problème de download du dépot libtorrent"
@@ -577,6 +575,8 @@ Owncloud : http://$IP/owncloud/
 
 Configuration Owncloud :
 Rendez-vous sur http://$IP/owncloud/ et créez votre compte administrateur avec votre login et votre mot de passe puis cliquez sur "Advanced" choisissez une base de données de type MYSQL avec les paramètres suivants : login : owncloud | nom de base : owncloud | mot de passe : $htpassword | hote : localhost
+
+Paramètres SQL : root : $bddpassword
 
 Paramètres FTP :
 -Hôte : $IP
